@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>AppShell</title>
+  <link rel="manifest" href="manifest.json" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <script defer src="assets/js/material.min.js"></script>
+  <script type="module" src="app.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAjlKL99nMVlgy3XmRS67lqj_ocTvi5-bg",
+      authDomain: "appshell-2b795.firebaseapp.com",
+      projectId: "appshell-2b795",
+      storageBucket: "appshell-2b795.appspot.com",
+      messagingSenderId: "121328260879",
+      appId: "1:121328260879:web:13bca9dbb4da3041f9507a",
+      measurementId: "G-YLKR4G3JPC"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    // Now you can use getToken since the Firebase SDK scripts are loaded
+    if ('Notification' in window && 'serviceWorker' in navigator) {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          // Permission granted, get the token and update the textarea
+          getToken(getMessaging(app), { vapidKey: 'BDw95X34dEgMuXQEIHxvIcrbLBUCROUuwdggLCXpm-xWvBxoJLWwX4Fqh_GYj5nfNVJWT2pwryGmLPcJKHIeaSA' })
+            .then((currentToken) => {
+              if (currentToken) {
+                // Update the textarea with the current token
+                document.getElementById('token').value = currentToken;
+                console.log('currentToken: ', currentToken);
+              } else {
+                console.log('cannot get token');
+              }
+            });
+        }
+      });
+    }
+  </script>
+</head>
+
+<body>
+
+  <div id="app">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">PWA - AppShell</span>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">PWA - Ana Rafhina</span>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="index.html">Home</a>
+          <a class="mdl-navigation__link" href="">IndexDB</a>
+          <a class="mdl-navigation__link"
+            href="https://anarafina.github.io/21195019-Araa-RegSore-TI-Sem5-UTS-PWA/">Portfolio</a>
+        </nav>
+      </div>
+      <main class="mdl-layout__content mat-typography" style="text-align: center">
+        <p id="output">
+          <img src="assets/images/pwa-logo.png" alt="" />
+        </p>
+        <h1>Push Notifikasi PWA</h1>
+        <h2>Token:</h2>
+        
+        <textarea name="token" id="token" cols="30" rows="10"></textarea>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    if ('Notification' in window && 'serviceWorker' in navigator) {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          // Izin diberikan, Anda dapat mengirim notifikasi push.
+        }
+      });
+    }
+  </script>
+
+</body>
+
+</html>
